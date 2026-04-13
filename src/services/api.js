@@ -6,7 +6,7 @@ let sessionExpiredToastShown = false;
 console.log(import.meta.env.VITE_API_URL);
 
 const API = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/api/v1` ,
+  baseURL: `${import.meta.env.VITE_API_URL}` ,
 });
 
 // Request Interceptor: Inject JWT token
