@@ -63,6 +63,30 @@
     box-shadow 0.2s;
 }
 
+.portal-card-btns{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.demo-portal-card-btn{
+   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.25rem;
+  border-radius: var(--radius-sm);
+  color: rgb(69, 17, 17);
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: opacity 0.15s;
+}
+.demo-portal-card-btn.employee {
+  background: linear-gradient(135deg, #da5f12, #06b6d4);
+}
+.demo-portal-card-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
 .portal-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { loginEmployee, loginAdmin, loginHr } from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 import { EyeIcon, EyeOffIcon, ShieldIcon } from "../../components/ui/Icons";
@@ -11,7 +11,7 @@ const roleConfig = {
     title: "Employee Login",
     subtitle: "Enter your password",
     label: "Employee Email",
-    placeholder: "Enter Email",
+    placeholder: "name@company.com",
     desc: "Employee login for attendance, leave records, payroll insights, and personal profile access",
     footerText: "Use the credentials created by your Admin.",
     gradient: "employee",
@@ -21,7 +21,7 @@ const roleConfig = {
     title: "HR Login",
     subtitle: "Enter your password",
     label: "HR Email",
-    placeholder: "Enter Email",
+    placeholder: "hr@company.com",
     desc: "HR login for employee operations, approvals, and workforce workflows",
     footerText: "Contact Admin if you forgot your password.",
     gradient: "hr",
@@ -31,7 +31,7 @@ const roleConfig = {
     title: "Admin Login",
     subtitle: "Enter your password",
     label: "Admin Email",
-    placeholder: "Enter Email",
+    placeholder: "admin@company.com",
     desc: "Admin login for the management dashboard",
     footerText: "Contact system administrator for access.",
     gradient: "admin",
@@ -52,19 +52,24 @@ const Login = () => {
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+   const [searchParams] = useSearchParams();
+
+  const demoQuery = searchParams.get("demo");
+  const demo = demoQuery === "true" ? "true" : null;
 
   const handleNext = (e) => {
     e.preventDefault();
+    if(demo) return handleLogin()
     if (!email.trim()) return;
     setStep(2);
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+    if(!demo) e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      const response = await config.loginFn({ email, password });
+      const response = await config.loginFn({ email, password, demo: demo === "true" ? true : false });
       if (response.success) {
         // Backend returns { success: true, data: userDoc, token }
         // userDoc has: _id, email, role, profileCompleted, isActive
@@ -74,6 +79,7 @@ const Login = () => {
           role: response.data.role,
           profileCompleted: response.data.profileCompleted,
           isActive: response.data.isActive,
+          demo: demo === "true" ? true : false,
         };
         loginUser(userData, response.token);
       }
@@ -110,23 +116,27 @@ const Login = () => {
 
           {step === 1 ? (
             <form onSubmit={handleNext}>
-              <div className="auth-form-group">
-                <label>{config.label}</label>
-                <input
-                  type="email"
-                  placeholder={config.placeholder}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoFocus
-                />
-              </div>
+              {
+                !demo && <div className="auth-form-group">
+                  <label>{config.label}</label>
+                  <input
+                    type="email"
+                    placeholder={config.placeholder}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoFocus
+                  />
+                </div>
+              }
+
               <button
                 type="submit"
                 className="btn-login"
                 style={{ width: "100%" }}
+                disabled={loading}
               >
-                Next
+                {loading ? "Next..." : "Next"}
               </button>
               <p className="auth-footer-text">{config.footerText}</p>
             </form>
@@ -146,7 +156,7 @@ const Login = () => {
                 <div style={{ position: "relative" }}>
                   <input
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter Password"
+                    placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required

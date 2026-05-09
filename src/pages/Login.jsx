@@ -6,6 +6,7 @@ import {
   ShieldIcon,
   ArrowRightIcon,
 } from "../components/ui/Icons";
+import { DemoButton } from "../utils/Btns";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,12 +36,20 @@ const Login = () => {
             <span className="portal-card-tag">Attendance history</span>
             <span className="portal-card-tag">Leave requests</span>
           </div>
-          <button
-            className="portal-card-btn employee"
-            onClick={() => navigate("/auth/employee")}
-          >
-            Login Now <ArrowRightIcon size={16} />
-          </button>
+          <div className="portal-card-btns">
+            <button
+              className="portal-card-btn employee"
+              onClick={() => navigate("/auth/employee")}
+            >
+              Login Now <ArrowRightIcon size={16} />
+            </button>
+            <DemoButton
+              action={() => navigate("/auth/employee?demo=true")}
+              Icon={true}
+              color="#4caf50"
+            />
+          </div>
+
         </div>
 
         {/* HR Card */}
@@ -61,12 +70,20 @@ const Login = () => {
             <span className="portal-card-tag">Recruitment flow</span>
             <span className="portal-card-tag">People operations</span>
           </div>
-          <button
-            className="portal-card-btn hr"
-            onClick={() => navigate("/auth/hr")}
-          >
-            Login Now <ArrowRightIcon size={16} />
-          </button>
+          <div className="portal-card-btns">
+            <button
+              className="portal-card-btn hr"
+              onClick={() => navigate("/auth/hr")}
+            >
+              Login Now <ArrowRightIcon size={16} />
+            </button>
+            <DemoButton
+              action={() => navigate("/auth/hr?demo=true")}
+              Icon={true}
+              color="#4caf50"
+            />
+          </div>
+
         </div>
 
         {/* Admin Card */}
@@ -87,17 +104,24 @@ const Login = () => {
             <span className="portal-card-tag">Access policies</span>
             <span className="portal-card-tag">Payroll analytics</span>
           </div>
-          <button
-            className="portal-card-btn admin"
-            onClick={() => navigate("/auth/admin")}
-          >
-            Login Now <ArrowRightIcon size={16} />
-          </button>
+          <div className="portal-card-btns">
+            <button
+              className="portal-card-btn admin"
+              onClick={() => navigate("/auth/admin")}
+            >
+              Login Now <ArrowRightIcon size={16} />
+            </button>
+            <DemoButton
+              action={() => navigate("/auth/admin?demo=true")}
+              Icon={true}
+              color="#4caf50"
+            />
+          </div>
         </div>
       </div>
 
       <p className="portal-footer">
-        &copy;2026 HRMS Portal. All rights reserved.
+        © {new Date().getFullYear()} HRMS Portal. All rights reserved.
       </p>
     </div>
   );
